@@ -40,8 +40,14 @@ Dev environment: Laragon (Windows), tanpa Docker/Sail.
 - Jangan install package baru tanpa izin; sebutkan alasannya kalau butuh.
 - Jangan ubah migration yang sudah di-merge; buat migration baru.
 - Di akhir task, tulis ringkasan: file yang diubah, asumsi yang diambil, hal yang perlu direview manusia.
+- Untuk task UI, baca docs/DESIGN.md dan gambar di docs/design/ dulu. Ikuti token dan gaya di sana.
 
 ## Konvensi
 - Nama tabel/kolom: snake_case, bahasa Inggris. Teks UI: bahasa Indonesia.
 - Commit message: conventional commits (`feat:`, `fix:`, `test:`, `docs:`, `refactor:`).
 - 1 task = 1 branch = 1 PR kecil.
+
+## Catatan environment
+- Semua perintah dijalankan dari PowerShell (Windows). PHP, Composer, dan Node 24 harus ada di PATH.
+- MySQL berjalan lewat Laragon (harus dalam keadaan Start All), database: `tiketku`.
+- Jangan jalankan `npm run dev` atau server panjang lain kecuali diminta.
