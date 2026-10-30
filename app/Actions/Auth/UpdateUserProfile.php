@@ -23,6 +23,10 @@ class UpdateUserProfile
 
         $user->save();
 
+        if ($emailChanged) {
+            $user->sendEmailVerificationNotification();
+        }
+
         return $emailChanged;
     }
 }

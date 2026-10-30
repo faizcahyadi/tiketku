@@ -237,6 +237,10 @@
     overflow-wrap: anywhere;
 }
 
+.logout-form {
+    margin-top: var(--space-5);
+}
+
 @media (max-width: 640px) {
     .auth-shell {
         padding-inline: var(--space-4);

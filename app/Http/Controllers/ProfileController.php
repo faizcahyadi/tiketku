@@ -21,10 +21,6 @@ class ProfileController extends Controller
     {
         $emailChanged = $updateUserProfile($request->user(), $request->validated());
 
-        if ($emailChanged) {
-            $request->user()->sendEmailVerificationNotification();
-        }
-
         return redirect()->route('profile.edit')->with(
             'status',
             $emailChanged

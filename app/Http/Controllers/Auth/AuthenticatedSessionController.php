@@ -19,7 +19,18 @@ class AuthenticatedSessionController extends Controller
 
     public function store(LoginRequest $request, AuthenticateUser $authenticateUser): RedirectResponse
     {
-        if (! $authenticateUser($request->validated())) {
+        $authenticated = $authenticateUser($request, $request->validated());
+
+        if ($authenticated === null) {
+            $response = back()->withErrors([
+                'email' => 'Terlalu banyak percobaan masuk. Coba lagi sebentar.',
+            ])->onlyInput('email');
+            $response->setStatusCode(429);
+
+            return $response;
+        }
+
+        if (! $authenticated) {
             return back()->withErrors([
                 'email' => 'Email atau kata sandi tidak cocok.',
             ])->onlyInput('email');

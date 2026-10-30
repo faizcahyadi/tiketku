@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Notification;
 
 it('allows an authenticated user to update their profile', function () {
     $user = User::factory()->create();
@@ -17,6 +19,7 @@ it('allows an authenticated user to update their profile', function () {
 
 it('requires re-verification when the user changes their email', function () {
     $user = User::factory()->create(['email' => 'old@example.test']);
+    Notification::fake();
 
     $this->actingAs($user)->put(route('profile.update'), [
         'name' => $user->name,
@@ -26,6 +29,8 @@ it('requires re-verification when the user changes their email', function () {
 
     expect($user->fresh()->email)->toBe('new@example.test')
         ->and($user->fresh()->email_verified_at)->toBeNull();
+
+    Notification::assertSentTo($user->fresh(), VerifyEmail::class);
 });
 
 it('rejects profile access for guests', function () {

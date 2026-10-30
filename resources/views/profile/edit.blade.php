@@ -29,7 +29,7 @@
     @unless ($user->hasVerifiedEmail())
         <p class="auth-links"><a href="{{ route('verification.notice') }}">Verifikasi email</a></p>
     @endunless
-    <form class="auth-form" method="POST" action="{{ route('logout') }}" style="margin-top: 20px">
+    <form class="auth-form logout-form" method="POST" action="{{ route('logout') }}">
         @csrf
         <button class="submit" type="submit">Keluar</button>
     </form>
