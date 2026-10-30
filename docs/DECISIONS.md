@@ -3,7 +3,7 @@
 Format: konteks -> keputusan -> alasan. Status: Proposed / Accepted / Superseded.
 Ubah statusnya sendiri setelah lo setuju.
 
-## 001 — Framework & UI: Laravel 12 + Livewire
+## 001 — Framework & UI: Laravel 13 + Livewire
 **Status:** Proposed
 Satu bahasa (PHP) untuk backend dan UI interaktif, cocok untuk dashboard dan seat map (dengan Alpine/JS secukupnya).
 Alternatif: Inertia + Vue/React kalau mau frontend terpisah.
