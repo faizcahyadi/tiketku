@@ -5,7 +5,7 @@
 @section('heading', 'Buat akun')
 @section('intro', 'Daftar untuk mencari event dan menyimpan tiket Anda.')
 
-@section('content')
+@section('form-content')
     <form class="auth-form" method="POST" action="{{ route('register.store') }}">
         @csrf
         <div class="field">

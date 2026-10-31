@@ -5,12 +5,17 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/events', [PageController::class, 'events'])->name('events.index');
+Route::get('/events/{slug}', [PageController::class, 'event'])->name('events.show');
+Route::get('/checkout/demo', [PageController::class, 'checkout'])->name('checkout.demo');
+Route::get('/my-tickets', [PageController::class, 'myTickets'])->name('tickets.preview');
+Route::get('/organizer', [PageController::class, 'organizer'])->name('organizer.dashboard');
+Route::get('/scanner', [PageController::class, 'scanner'])->name('scanner.preview');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
