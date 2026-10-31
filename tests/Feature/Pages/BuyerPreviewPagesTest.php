@@ -23,6 +23,15 @@ it('shows a read-only checkout preview with a path to sample tickets', function 
     DB::connection()->disableQueryLog();
 });
 
+it('keeps the selected event when previewing checkout from its detail page', function () {
+    $this->get('/checkout/demo?event=ruang-nada')
+        ->assertOk()
+        ->assertSee('Ruang Nada')
+        ->assertDontSee('Pulang Sebelum Pagi');
+
+    $this->get('/checkout/demo?event=event-yang-tidak-ada')->assertNotFound();
+});
+
 it('shows a clearly labeled sample e-ticket without a real QR code', function () {
     $this->get('/my-tickets')
         ->assertOk()

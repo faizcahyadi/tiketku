@@ -33,9 +33,14 @@ class PageController extends Controller
         return view('pages.events.show', ['event' => $event]);
     }
 
-    public function checkout(): View
+    public function checkout(Request $request): View
     {
-        $event = DemoEventCatalog::featured();
+        $slug = $request->query('event');
+        $event = $slug === null
+            ? DemoEventCatalog::featured()
+            : DemoEventCatalog::find((string) $slug);
+        abort_if($event === null, 404);
+
         $ticketType = $event['ticket_types'][0];
 
         return view('pages.checkout-preview', [

@@ -44,3 +44,25 @@ it('rejects a duplicate email during registration', function () {
         'password_confirmation' => 'Ticketku!2026',
     ])->assertSessionHasErrors('email');
 });
+
+it('registers a buyer without a phone number and allows that account to log in', function () {
+    $this->seed(RoleSeeder::class);
+    Notification::fake();
+
+    $this->post(route('register.store'), [
+        'name' => 'Budi Pembeli',
+        'email' => 'budi@example.test',
+        'password' => 'Ticketku!2026',
+        'password_confirmation' => 'Ticketku!2026',
+    ])->assertRedirect(route('verification.notice'));
+
+    $this->assertAuthenticated();
+    $this->post(route('logout'))->assertRedirect('/');
+
+    $this->post(route('login.store'), [
+        'email' => 'budi@example.test',
+        'password' => 'Ticketku!2026',
+    ])->assertRedirect(route('profile.edit'));
+
+    $this->assertAuthenticatedAs(User::where('email', 'budi@example.test')->firstOrFail());
+});

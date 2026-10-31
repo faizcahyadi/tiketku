@@ -27,7 +27,7 @@
                 @endforeach
                 <p class="preview-note">Harga dan kategori di atas hanya untuk preview.</p>
             </section>
-            <a class="button-primary" href="{{ route('checkout.demo') }}">Lanjut ke preview checkout</a>
+            <a class="button-primary" href="{{ route('checkout.demo', ['event' => $event['slug']]) }}">Lanjut ke preview checkout</a>
         </div>
     </article>
 @endsection
