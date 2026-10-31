@@ -23,7 +23,7 @@ it('seeds repeatable verified demo accounts only in the local environment', func
     $this->post(route('login.store'), [
         'email' => 'buyer1@tiketku.test',
         'password' => 'TiketKuDemo2026!',
-    ])->assertRedirect(route('profile.edit'));
+    ])->assertRedirect(route('home'));
 
     $this->assertAuthenticatedAs($buyer);
 });

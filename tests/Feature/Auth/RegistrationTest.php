@@ -62,7 +62,7 @@ it('registers a buyer without a phone number and allows that account to log in',
     $this->post(route('login.store'), [
         'email' => 'budi@example.test',
         'password' => 'Ticketku!2026',
-    ])->assertRedirect(route('profile.edit'));
+    ])->assertRedirect(route('home'));
 
     $this->assertAuthenticatedAs(User::where('email', 'budi@example.test')->firstOrFail());
 });
