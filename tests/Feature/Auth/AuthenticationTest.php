@@ -62,7 +62,7 @@ it('rejects login email addresses longer than 255 characters', function () {
     $this->post(route('login.store'), [
         'email' => $email,
         'password' => 'wrong-password',
-    ])->assertSessionHasErrors('email');
+    ])->assertSessionHasErrors(['email' => 'Email maksimal 255 karakter.']);
 });
 
 it('limits repeated login attempts', function () {

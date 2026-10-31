@@ -17,7 +17,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string'],
             'remember' => ['sometimes', 'boolean'],
         ];
@@ -31,6 +31,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Masukkan alamat email yang valid.',
+            'email.max' => 'Email maksimal 255 karakter.',
             'password.required' => 'Kata sandi wajib diisi.',
         ];
     }
