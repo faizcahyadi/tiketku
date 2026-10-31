@@ -18,7 +18,7 @@ class AuthenticateUser
     {
         $remember = (bool) ($credentials['remember'] ?? false);
         unset($credentials['remember']);
-        $throttleKey = 'login|'.Str::lower($credentials['email']).'|'.$request->ip();
+        $throttleKey = 'login|'.hash('sha256', Str::lower($credentials['email']).'|'.$request->ip());
 
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             return new LoginAttemptResult(false, RateLimiter::availableIn($throttleKey));

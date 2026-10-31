@@ -48,6 +48,20 @@ it('rejects an email verification link with an invalid signature', function () {
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
+it('rejects an expired email verification link', function () {
+    $user = User::factory()->unverified()->create();
+    $verificationUrl = URL::temporarySignedRoute(
+        'verification.verify',
+        now()->subMinute(),
+        ['id' => $user->id, 'hash' => sha1($user->email)],
+    );
+
+    $this->actingAs($user)->get($verificationUrl)
+        ->assertForbidden();
+
+    expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+});
+
 it('shows the verification notice to an unverified user', function () {
     $user = User::factory()->unverified()->create(['email' => 'verify@example.test']);
 

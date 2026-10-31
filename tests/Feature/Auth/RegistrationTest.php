@@ -18,6 +18,7 @@ it('registers a buyer and sends an email verification notification', function ()
     ])->assertRedirect(route('verification.notice'));
 
     $user = User::where('email', 'ayu@example.test')->firstOrFail();
+    $this->assertAuthenticatedAs($user);
 
     expect($user->phone)->toBe('081234567890')
         ->and($user->hasRole('buyer'))->toBeTrue()

@@ -3,6 +3,12 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+
+function loginRateLimitKeyForTest(string $email, string $ip = '127.0.0.1'): string
+{
+    return 'login|'.hash('sha256', Str::lower($email).'|'.$ip);
+}
 
 it('authenticates a user and logs them out', function () {
     $user = User::factory()->create([
@@ -36,10 +42,33 @@ it('rejects incorrect credentials', function () {
     expect(Auth::check())->toBeFalse();
 });
 
+it('stores login attempts under a bounded key for long valid email addresses', function () {
+    $email = str_repeat('a', 64).'@'.str_repeat('b', 63).'.'.str_repeat('c', 62).'.'.str_repeat('d', 25).'.com';
+    $key = loginRateLimitKeyForTest($email);
+    RateLimiter::clear($key);
+
+    $this->post(route('login.store'), [
+        'email' => $email,
+        'password' => 'wrong-password',
+    ])->assertSessionHasErrors('email');
+
+    expect(strlen($key))->toBeLessThan(80)
+        ->and(RateLimiter::attempts($key))->toBe(1);
+});
+
+it('rejects login email addresses longer than 255 characters', function () {
+    $email = str_repeat('a', 64).'@'.str_repeat('b', 63).'.'.str_repeat('c', 63).'.'.str_repeat('d', 63);
+
+    $this->post(route('login.store'), [
+        'email' => $email,
+        'password' => 'wrong-password',
+    ])->assertSessionHasErrors('email');
+});
+
 it('limits repeated login attempts', function () {
     $email = 'buyer@example.test';
     User::factory()->create(['email' => $email]);
-    RateLimiter::clear('login|'.$email.'|127.0.0.1');
+    RateLimiter::clear(loginRateLimitKeyForTest($email));
 
     for ($attempt = 0; $attempt < 5; $attempt++) {
         $this->post(route('login.store'), [
@@ -59,8 +88,8 @@ it('limits repeated login attempts', function () {
 it('isolates failed login attempts by email address', function () {
     User::factory()->create(['email' => 'first@example.test']);
     User::factory()->create(['email' => 'second@example.test']);
-    RateLimiter::clear('login|first@example.test|127.0.0.1');
-    RateLimiter::clear('login|second@example.test|127.0.0.1');
+    RateLimiter::clear(loginRateLimitKeyForTest('first@example.test'));
+    RateLimiter::clear(loginRateLimitKeyForTest('second@example.test'));
 
     for ($attempt = 0; $attempt < 5; $attempt++) {
         $this->post(route('login.store'), [
@@ -86,7 +115,7 @@ it('clears failed login attempts after a successful login', function () {
         'email' => $email,
         'password' => 'Ticketku!2026',
     ]);
-    RateLimiter::clear('login|'.$email.'|127.0.0.1');
+    RateLimiter::clear(loginRateLimitKeyForTest($email));
 
     for ($attempt = 0; $attempt < 4; $attempt++) {
         $this->post(route('login.store'), [
