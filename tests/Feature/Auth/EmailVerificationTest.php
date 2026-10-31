@@ -29,6 +29,16 @@ it('resends a verification notification to the signed-in user', function () {
     Notification::assertSentTo($user, VerifyEmail::class);
 });
 
+it('does not resend verification to an already verified user', function () {
+    $user = User::factory()->create();
+    Notification::fake();
+
+    $this->actingAs($user)->post(route('verification.send'))
+        ->assertRedirect();
+
+    Notification::assertNothingSent();
+});
+
 it('rejects an email verification link with an invalid signature', function () {
     $user = User::factory()->unverified()->create();
 

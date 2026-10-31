@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -17,20 +18,17 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
-    public function store(LoginRequest $request, AuthenticateUser $authenticateUser): RedirectResponse
+    public function store(LoginRequest $request, AuthenticateUser $authenticateUser): RedirectResponse|Response
     {
-        $authenticated = $authenticateUser($request, $request->validated());
+        $result = $authenticateUser($request, $request->validated());
 
-        if ($authenticated === null) {
-            $response = back()->withErrors([
-                'email' => 'Terlalu banyak percobaan masuk. Coba lagi sebentar.',
-            ])->onlyInput('email');
-            $response->setStatusCode(429);
-
-            return $response;
+        if ($result->retryAfterSeconds !== null) {
+            return response()
+                ->view('auth.rate-limited', ['retryAfter' => $result->retryAfterSeconds], 429)
+                ->header('Retry-After', (string) $result->retryAfterSeconds);
         }
 
-        if (! $authenticated) {
+        if (! $result->authenticated) {
             return back()->withErrors([
                 'email' => 'Email atau kata sandi tidak cocok.',
             ])->onlyInput('email');

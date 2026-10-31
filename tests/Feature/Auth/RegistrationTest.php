@@ -24,6 +24,12 @@ it('registers a buyer and sends an email verification notification', function ()
         ->and($user->hasVerifiedEmail())->toBeFalse();
 
     Notification::assertSentTo($user, VerifyEmail::class);
+    Notification::assertSentTo($user, VerifyEmail::class, function (VerifyEmail $notification) use ($user) {
+        $mail = $notification->toMail($user);
+
+        return $mail->subject === 'Verifikasi alamat email Anda'
+            && $mail->actionText === 'Verifikasi alamat email';
+    });
 });
 
 it('rejects a duplicate email during registration', function () {

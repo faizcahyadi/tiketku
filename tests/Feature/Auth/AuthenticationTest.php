@@ -51,7 +51,9 @@ it('limits repeated login attempts', function () {
     $this->post(route('login.store'), [
         'email' => $email,
         'password' => 'wrong-password',
-    ])->assertTooManyRequests();
+    ])->assertTooManyRequests()
+        ->assertHeader('Retry-After')
+        ->assertSee('Terlalu banyak percobaan masuk');
 });
 
 it('isolates failed login attempts by email address', function () {

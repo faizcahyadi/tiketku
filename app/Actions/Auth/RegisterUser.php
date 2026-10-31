@@ -3,7 +3,6 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUser
@@ -22,7 +21,7 @@ class RegisterUser
             return $user;
         });
 
-        event(new Registered($user));
+        $user->sendEmailVerificationNotification();
 
         return $user;
     }
