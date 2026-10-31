@@ -19,7 +19,7 @@ it('authenticates a user and logs them out', function () {
     $this->post(route('login.store'), [
         'email' => 'buyer@example.test',
         'password' => 'Ticketku!2026',
-    ])->assertRedirect(route('profile.edit'));
+    ])->assertRedirect(route('home'));
 
     $this->assertAuthenticatedAs($user);
 
@@ -127,7 +127,7 @@ it('clears failed login attempts after a successful login', function () {
     $this->post(route('login.store'), [
         'email' => $email,
         'password' => 'Ticketku!2026',
-    ])->assertRedirect(route('profile.edit'));
+    ])->assertRedirect(route('home'));
     $this->post(route('logout'))->assertRedirect('/');
 
     for ($attempt = 0; $attempt < 5; $attempt++) {

@@ -5,7 +5,7 @@
 @section('heading', 'Profil')
 @section('intro', 'Perbarui nama, email, dan nomor telepon yang terhubung ke akun.')
 
-@section('content')
+@section('form-content')
     <form class="auth-form" method="POST" action="{{ route('profile.update') }}">
         @csrf
         @method('PUT')

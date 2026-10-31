@@ -5,7 +5,7 @@
 @section('heading', 'Masuk')
 @section('intro', 'Masuk untuk melihat profil dan tiket Anda.')
 
-@section('content')
+@section('form-content')
     <form class="auth-form" method="POST" action="{{ route('login.store') }}">
         @csrf
         <div class="field">

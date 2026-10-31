@@ -5,7 +5,7 @@
 @section('heading', 'Verifikasi email')
 @section('intro', 'Tautan verifikasi dikirim ke alamat berikut:')
 
-@section('content')
+@section('form-content')
     <div class="auth-form">
         <p><strong>{{ $email }}</strong></p>
         <p>Buka email tersebut untuk mengaktifkan akun Anda. Jika tautannya tidak terlihat, periksa folder spam atau kirim ulang.</p>
