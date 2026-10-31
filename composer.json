@@ -43,7 +43,7 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force",
+            "@php artisan migrate --seed --force",
             "npm install --ignore-scripts",
             "npm run build"
         ],
@@ -55,6 +55,7 @@
             "@php artisan config:clear --ansi @no_additional_args",
             "@php artisan test"
         ],
+        "analyse": "@php vendor/bin/phpstan analyse --memory-limit=1G",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -89,7 +90,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-
-    "analyse": "phpstan analyse --memory-limit=1G"
+    "prefer-stable": true
 }

@@ -4,7 +4,7 @@ Platform penjualan tiket event/konser multi-organizer. Baca `docs/PRD.md`,
 `docs/DATABASE.md`, dan `docs/DECISIONS.md` sebelum mengerjakan task apa pun.
 
 ## Stack
-Laravel 12, PHP 8.3, MySQL, Livewire, Pest, Pint, Larastan.
+Laravel 13, PHP 8.3, MySQL, Livewire, Pest, Pint, Larastan.
 Redis baru dipakai mulai Tahap 8 (kursi dan antrean), jangan dipakai sebelum diminta.
 Dev environment: Laragon (Windows), tanpa Docker/Sail.
 
